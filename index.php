@@ -13,7 +13,7 @@ require_once('header.php');
                         <div class="welcom">
                       <div style="margin-right: 100px;font-weight: bold;">
                       <h1  style="direction: rtl;">مرحبا بكم في عيادة  </h1>
-                      <h1  style="direction: rtl; margin-right: 95px;font-weight: bold;">دار الشفاء  </h1>
+                      <h1  style="direction: rtl; margin-right: 95px;font-weight: bold;">دار الشفاء التخصصي   </h1>
                       </div>
                     <p class="mb-5" style="direction: rtl ;font-weight: 700;font-size:20px;margin-right:20px;margin-top:20px">   ,ويزورها الأشخاص الأقل مرضاً الذين لا يحمركز رعاية طبي يقدم رعاية طبية وقائية روتينية للأشخاص الأصحاء، تاجون إلى المكوثورعاية طبية للمرضى، وتكون العيادات الطبية بالغالب أصغر من المستشفيات، ويزورها الأشخاص الأقل مرضاً الذين لا يحمركز رعاية طبي يقدم رعاية طبية وقائية روتينية للأشخاص الأصحاء، تاجون إلى المكوث</p>
                     <div class="col-auto" ><button class="btn btn-primary " id="submitButton" type="submit" style="font-size: 20px;font-weight: bold;"> <a href="dashboard/sign_in.php" class="btn btn-primary">تسجيل جلسة</a></button></div>

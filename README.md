@@ -4,6 +4,12 @@ ShifaFlow is an Arabic-first clinic workflow demo for managing users, appointmen
 
 > The published demo must contain fictional data only. This repository is not yet certified for real medical records.
 
+## Live demo
+
+[Open ShifaFlow on Railway](https://shifaflow-production.up.railway.app/)
+
+Use one of the fictional accounts below. Do not enter real patient or medical data.
+
 ## What is included
 
 - Responsive Arabic RTL landing page and dashboard.

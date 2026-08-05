@@ -1,84 +1,165 @@
 # ShifaFlow — منصة شفاء لإدارة العيادات
 
-ShifaFlow is an Arabic-first clinic workflow demo for managing users, appointments, contact messages, and basic clinical follow-up. It is a ground-up renewal of the former “Dar Al‑Shifa” prototype with a safer architecture and a deployment-ready container.
+منصة عربية تجريبية لتنظيم سير العمل داخل العيادة: إدارة المستخدمين والمواعيد، متابعة طلبات التواصل، وتسجيل الملاحظات الطبية الأساسية بصلاحيات منفصلة للمدير والطبيب والمريض.
 
-> The published demo must contain fictional data only. This repository is not yet certified for real medical records.
+تمثل ShifaFlow إعادة بناء شاملة لمشروع **دار الشفاء** السابق، بهيكل أكثر أماناً وواجهة عربية متجاوبة وتجهيز كامل للاختبار والنشر بالحاويات.
 
-## Live demo
+> [!IMPORTANT]
+> النسخة المنشورة مخصصة للعرض والتجربة باستخدام بيانات خيالية فقط. لا تدخل بيانات مرضى أو معلومات طبية حقيقية؛ فالمنصة لم تُعتمد بعد للاستخدام الطبي الفعلي.
 
-[Open ShifaFlow on Railway](https://shifaflow-production.up.railway.app/)
+## التجربة المباشرة
 
-Use one of the fictional accounts below. Do not enter real patient or medical data.
+[فتح ShifaFlow على Railway](https://shifaflow-production.up.railway.app/)
 
-## What is included
-
-- Responsive Arabic RTL landing page and dashboard.
-- Patient registration and secure email/phone login.
-- Admin, doctor, and patient roles with server-side authorization.
-- Appointment request, confirmation, cancellation, rejection, and completion flows.
-- Doctor-only diagnosis and treatment notes for assigned appointments.
-- Admin user controls and contact-message inbox.
-- CSRF protection, prepared database statements, secure sessions, security headers, and audit logging.
-- MySQL schema, idempotent setup script, automated tests, Docker, and GitHub Actions.
-
-## Demo accounts
-
-| Role | Email | Password |
+| الدور | البريد الإلكتروني | كلمة المرور |
 |---|---|---|
-| Admin | `admin@shifaflow.test` | `Demo@12345` |
-| Doctor | `doctor@shifaflow.test` | `Demo@12345` |
-| Patient | `patient@shifaflow.test` | `Demo@12345` |
+| مدير النظام | `admin@shifaflow.test` | `Demo@12345` |
+| طبيب | `doctor@shifaflow.test` | `Demo@12345` |
+| مريض | `patient@shifaflow.test` | `Demo@12345` |
 
-Change or disable all demo credentials before any non-demo deployment.
+هذه الحسابات والبيانات المرفقة بها خيالية. غيّرها أو عطّلها قبل أي تشغيل غير تجريبي.
 
-## Run with WampServer
+## أبرز المزايا
 
-1. Copy `.env.example` to `.env` and set the local MySQL values.
-2. Run `C:\wamp64\bin\php\php8.3.14\php.exe bin\setup.php --seed`.
-3. Open `http://localhost/my_clinic_2/my_clinic_2/`.
+- واجهة عربية RTL متجاوبة للهواتف وأجهزة سطح المكتب.
+- تسجيل المرضى وتسجيل الدخول بالبريد الإلكتروني أو رقم الجوال.
+- صلاحيات منفصلة للمدير والطبيب والمريض يجري التحقق منها داخل الخادم.
+- إنشاء طلبات المواعيد وتأكيدها أو رفضها أو إلغاؤها أو إكمالها.
+- إضافة التشخيص وخطة العلاج بواسطة الطبيب المكلّف بالموعد فقط.
+- إدارة المستخدمين ومراجعة رسائل التواصل من لوحة المدير.
+- جلسات آمنة، وحماية CSRF، واستعلامات قاعدة بيانات محضّرة.
+- ترويسات حماية، وتحقق من المدخلات، وسجل للعمليات المهمة.
+- إعداد آلي لقاعدة البيانات وبيانات تجريبية قابلة للتكرار بأمان.
+- اختبارات آلية وبناء Docker وفحوصات GitHub Actions.
+- فحص صحة مخصص للنشر عبر المسار `/health`.
 
-The new database defaults to `shifaflow_demo`; the former project database is not modified.
+## التقنيات المستخدمة
 
-## Run with Docker
+| المجال | التقنية |
+|---|---|
+| الواجهة | HTML، CSS، واجهة عربية RTL |
+| الخادم | PHP 8.3+ بدون إطار عمل ثقيل |
+| قاعدة البيانات | MySQL 8.4 وPDO |
+| التشغيل المحلي | WampServer أو Docker Compose |
+| النشر | Docker وRailway |
+| الجودة | اختبارات PHP مستقلة وGitHub Actions |
+
+## التشغيل السريع باستخدام Docker
+
+يلزم تثبيت Docker وDocker Compose، ثم تشغيل:
 
 ```bash
 docker compose up --build
 ```
 
-Open `http://localhost:8080`. The included MySQL volume preserves local demo data between container restarts.
+بعد اكتمال الإعداد افتح:
 
-## Quality checks
+```text
+http://localhost:8080
+```
+
+تُحفظ قاعدة البيانات في وحدة تخزين Docker باسم `shifaflow_mysql`، لذلك تبقى البيانات التجريبية بعد إعادة تشغيل الحاويات.
+
+## التشغيل باستخدام WampServer
+
+1. انسخ ملف الإعدادات النموذجي:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+2. راجع بيانات MySQL داخل `.env`. الإعداد المحلي الافتراضي يستخدم قاعدة باسم `shifaflow_demo` ولا يعدّل قاعدة المشروع السابق.
+
+3. أنشئ الجداول والبيانات التجريبية:
+
+   ```powershell
+   C:\wamp64\bin\php\php8.3.14\php.exe bin\setup.php --seed
+   ```
+
+4. افتح المشروع:
+
+   ```text
+   http://localhost/my_clinic_2/my_clinic_2/
+   ```
+
+## متغيرات الإعداد الأساسية
+
+أنشئ `.env` من `.env.example` ثم حدّث القيم المناسبة لبيئتك:
+
+| المتغير | الغرض |
+|---|---|
+| `APP_ENV` | نوع البيئة مثل `local` أو `production` |
+| `APP_DEBUG` | إظهار تفاصيل الأخطاء محلياً فقط |
+| `APP_URL` | الرابط الأساسي للتطبيق |
+| `APP_TIMEZONE` | المنطقة الزمنية، والافتراضي `Asia/Riyadh` |
+| `DB_HOST` و`DB_PORT` | عنوان MySQL ومنفذه |
+| `DB_NAME` | اسم قاعدة البيانات |
+| `DB_USER` و`DB_PASSWORD` | بيانات اتصال قاعدة البيانات |
+| `SEED_DEMO` | إنشاء الحسابات والبيانات التجريبية |
+| `ADMIN_*` | بيانات المدير الأول عند الإعداد غير التجريبي |
+
+لا ترفع ملف `.env` أو كلمات المرور أو مفاتيح الوصول إلى GitHub.
+
+## الاختبارات وفحوصات الجودة
 
 ```bash
 php bin/lint.php
 php tests/run.php
 ```
 
-GitHub Actions runs syntax checks, integration tests with MySQL, and a deployment-image build on every pull request.
+تغطي الاختبارات التحقق من المدخلات، حماية CSRF، إنشاء مخطط قاعدة البيانات، البيانات الأولية، تسجيل الدخول، الصلاحيات، وإنشاء المواعيد. كما تنفذ GitHub Actions فحص صياغة PHP والاختبارات وبناء صورة النشر عند كل تحديث وطلب دمج.
 
-## Deployment target: Railway
+## النشر على Railway
 
-The repository includes a root `Dockerfile` and `railway.toml` health check.
+المستودع مجهز بملفي `Dockerfile` و`railway.toml`، ويستمع التطبيق تلقائياً إلى المنفذ الذي توفره Railway.
 
-1. Create a Railway project and add a MySQL service.
-2. Add a web service connected to this GitHub repository and deployment branch.
-3. Reference the MySQL variables in the web service (`MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, `MYSQLPASSWORD`).
-4. Add `APP_ENV=production`, `APP_DEBUG=false`, `APP_TIMEZONE=Asia/Riyadh`, and `SEED_DEMO=true` for the public portfolio demo.
-5. Generate a public domain and verify `/health`, login, role access, and appointment creation.
+1. أنشئ مشروعاً في Railway وأضف خدمة MySQL.
+2. أضف خدمة تطبيق مرتبطة بهذا المستودع وفرع النشر.
+3. اربط متغيرات MySQL التالية بخدمة التطبيق:
+   `MYSQLHOST` و`MYSQLPORT` و`MYSQLDATABASE` و`MYSQLUSER` و`MYSQLPASSWORD`.
+4. أضف إعدادات الإنتاج:
 
-For real use, set `SEED_DEMO=false`, provide strong `ADMIN_*` values privately, use a custom HTTPS domain, configure backups and monitoring, and complete the controls listed in [SECURITY.md](SECURITY.md).
+   ```text
+   APP_ENV=production
+   APP_DEBUG=false
+   APP_TIMEZONE=Asia/Riyadh
+   SEED_DEMO=true
+   ```
 
-## Project structure
+5. أنشئ نطاقاً عاماً وتحقق من `/health` وصفحة الدخول وصلاحيات الأدوار.
+
+## بنية المشروع
 
 ```text
-app/        Core security, database, authentication, and view helpers
-bin/        Setup and quality-check scripts
-database/   Versioned MySQL schema
-public/     Web entry point and production assets
-tests/      Dependency-free integration tests
-views/      Arabic pages and dashboards
+app/          المصادقة وقاعدة البيانات والحماية والمكونات الأساسية
+bin/          إعداد قاعدة البيانات وفحوصات الجودة
+database/     مخطط MySQL المرقّم
+docker/       إعدادات PHP ونقطة تشغيل الحاوية
+public/       نقطة دخول الويب وملفات التصميم
+tests/        اختبارات التكامل المستقلة
+views/        الصفحات العربية ولوحات الأدوار
+Dockerfile    صورة التطبيق المخصصة للنشر
+railway.toml  إعداد البناء وفحص الصحة في Railway
 ```
 
-## Commercial readiness
+## الأمان وحدود الاستخدام
 
-ShifaFlow can become a real clinic product, but code quality alone is not enough. Before storing actual patient data, complete a local legal/privacy assessment, a professional security test, encrypted backup and recovery drills, MFA, password recovery, consent and retention workflows, incident response, observability, and operational access controls.
+يتضمن المشروع أساسيات مهمة مثل الجلسات الآمنة، والتحقق من الصلاحيات، وحماية CSRF، والاستعلامات المحضّرة، وترويسات الحماية. راجع [سياسة الأمان ومتطلبات الاستخدام الحقيقي](SECURITY.md) قبل تشغيله خارج بيئة العرض.
+
+للتحول إلى منتج طبي فعلي يلزم، على الأقل:
+
+- مراجعة قانونية وتنظيمية محلية للخصوصية والبيانات الصحية.
+- اختبار اختراق احترافي ومعالجة نتائجه.
+- تشفير النسخ الاحتياطية وتجربة الاستعادة بصورة دورية.
+- المصادقة متعددة العوامل واستعادة الحساب بطريقة آمنة.
+- سياسات الموافقة والاحتفاظ والحذف والاستجابة للحوادث.
+- مراقبة تشغيلية وتنبيهات وسجلات تدقيق مركزية.
+- ضبط الوصول الإداري وإدارة الأسرار خارج المستودع.
+
+## حفظ النسخة السابقة
+
+أُبقيت النسخة الأصلية من مشروع دار الشفاء دون تعديل في الفرع [`legacy/dar-al-shifa`](https://github.com/AmmarAikan/shifaflow/tree/legacy/dar-al-shifa)، بينما يجري تطوير ShifaFlow بصورة مستقلة.
+
+## حالة المشروع
+
+ShifaFlow حالياً **نسخة تجريبية منشورة وقابلة للتطوير**. هدف المرحلة الحالية تقديم تجربة عملية وآمنة ببيانات خيالية، وليس التعامل مع السجلات الطبية الحقيقية.

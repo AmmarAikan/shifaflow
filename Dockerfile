@@ -16,7 +16,7 @@ COPY docker/php.ini /usr/local/etc/php/conf.d/shifaflow.ini
 
 RUN chown -R www-data:www-data storage
 
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT ["/bin/sh", "/var/www/html/docker/entrypoint.sh"]
 CMD ["apache2-foreground"]

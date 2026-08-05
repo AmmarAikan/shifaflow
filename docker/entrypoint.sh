@@ -20,7 +20,17 @@ done
 if command -v a2dismod >/dev/null 2>&1; then
   a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
   a2enmod mpm_prefork >/dev/null
-  apache2ctl configtest
 fi
+
+# Railway assigns each deployment a public port through PORT. Apache defaults
+# to port 80, so keep its listener and virtual host in sync with the platform.
+if [ -n "${PORT:-}" ]; then
+  sed -ri "s/^Listen [0-9]+$/Listen ${PORT}/" /etc/apache2/ports.conf
+  sed -ri "s/<VirtualHost \\*:[0-9]+>/<VirtualHost *:${PORT}>/" \
+    /etc/apache2/sites-available/*.conf \
+    /etc/apache2/sites-enabled/*.conf
+fi
+
+apache2ctl configtest
 
 exec "$@"

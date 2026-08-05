@@ -1,0 +1,52 @@
+name: Quality checks
+
+on:
+  push:
+    branches: [master, "codex/**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root_test
+          MYSQL_DATABASE: shifaflow_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot_test"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=20
+
+    env:
+      APP_ENV: testing
+      APP_DEBUG: "false"
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_NAME: shifaflow_test
+      DB_USER: root
+      DB_PASSWORD: root_test
+      SEED_DEMO: "true"
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo_mysql, mbstring
+          coverage: none
+      - name: Prepare database
+        run: php bin/setup.php --seed
+      - name: Lint PHP
+        run: php bin/lint.php
+      - name: Run tests
+        run: php tests/run.php
+      - name: Build deployment image
+        run: docker build -t shifaflow:test .

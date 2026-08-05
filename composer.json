@@ -1,0 +1,17 @@
+{
+  "name": "ammaraikan/shifaflow",
+  "description": "Arabic-first clinic workflow and appointment management platform.",
+  "type": "project",
+  "license": "proprietary",
+  "require": {
+    "php": "^8.2",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-mbstring": "*"
+  },
+  "scripts": {
+    "test": "php tests/run.php",
+    "lint": "php bin/lint.php",
+    "setup": "php bin/setup.php --seed"
+  }
+}

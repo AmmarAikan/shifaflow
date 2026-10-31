@@ -1,8 +1,9 @@
-Options -Indexes
+Options -Indexes -MultiViews
 DirectorySlash Off
 RewriteEngine On
 
+RewriteRule "(^|/)\." - [F,L]
 RewriteRule ^(?:app|bin|database|storage|tests|docker)(?:/|$) - [F,L,NC]
+RewriteRule ^(?:composer\.(?:json|lock)|Dockerfile|docker-compose\.yml|railway\.toml|README\.md|SECURITY\.md)$ - [F,L,NC]
 RewriteRule ^assets/(.*)$ public/assets/$1 [L,NC]
-RewriteRule ^favicon\.ico$ public/favicon.ico [L,NC]
 RewriteRule ^ public/index.php [QSA,L]

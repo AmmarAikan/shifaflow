@@ -6,6 +6,7 @@
     <meta name="description" content="<?= e($pageDescription ?? '') ?>">
     <meta name="theme-color" content="#0b6b5c">
     <title><?= e($pageTitle ?? 'ShifaFlow') ?></title>
+    <link rel="icon" href="<?= url('/assets/favicon.svg') ?>" type="image/svg+xml">
     <link rel="stylesheet" href="<?= url('/assets/app.css') ?>">
 </head>
 <body>

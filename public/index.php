@@ -11,7 +11,8 @@ try {
 } catch (Throwable $exception) {
     http_response_code(503);
     $debug = getenv('APP_DEBUG') === 'true';
-    echo '<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><title>ShifaFlow</title><style>body{font-family:system-ui;background:#f5f7f8;color:#16352f;display:grid;place-items:center;min-height:100vh;margin:0}.box{max-width:620px;background:white;padding:32px;border-radius:24px;box-shadow:0 20px 60px #153b3020}h1{margin-top:0}</style><div class="box"><h1>النظام قيد التجهيز</h1><p>تعذر الاتصال بقاعدة البيانات. شغّل أداة الإعداد ثم أعد المحاولة.</p>' . ($debug ? '<small>' . htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8') . '</small>' : '') . '</div></html>';
+    $stylesheet = htmlspecialchars(url('/assets/app.css'), ENT_QUOTES, 'UTF-8');
+    echo '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ShifaFlow</title><link rel="stylesheet" href="' . $stylesheet . '"></head><body><main class="error-page"><div><span>503</span><h1>النظام قيد التجهيز</h1><p>تعذر الاتصال بقاعدة البيانات. شغّل أداة الإعداد ثم أعد المحاولة.</p>' . ($debug ? '<small>' . htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8') . '</small>' : '') . '</div></main></body></html>';
     exit;
 }
 
@@ -112,12 +113,12 @@ if ($method === 'GET' && $path === '/contact') {
 if ($method === 'POST' && $path === '/contact') {
     $name = trim((string) ($_POST['name'] ?? ''));
     $email = mb_strtolower(trim((string) ($_POST['email'] ?? '')));
-    $phone = trim((string) ($_POST['phone'] ?? ''));
+    $phone = preg_replace('/[\s-]+/', '', trim((string) ($_POST['phone'] ?? '')));
     $message = trim((string) ($_POST['message'] ?? ''));
     remember_old($_POST);
 
-    if (mb_strlen($name) < 2 || !Validator::email($email) || mb_strlen($message) < 10) {
-        flash('error', 'تحقق من الاسم والبريد ونص الرسالة.');
+    if (mb_strlen($name) < 2 || !Validator::email($email) || ($phone !== '' && !Validator::phone($phone)) || mb_strlen($message) < 10) {
+        flash('error', 'تحقق من الاسم والبريد ورقم الجوال ونص الرسالة.');
         redirect('/contact');
     }
 
@@ -285,6 +286,13 @@ if ($method === 'POST' && $path === '/appointments') {
     $timestamp = strtotime($scheduledAt);
     if (!$serviceId || !$timestamp || $timestamp < strtotime('+2 hours') || mb_strlen($reason) < 8 || mb_strlen($reason) > 500) {
         flash('error', 'اختر خدمة وموعدًا مستقبليًا، واكتب سبب الزيارة بوضوح.');
+        redirect('/appointments');
+    }
+
+    $serviceCheck = $pdo->prepare('SELECT COUNT(*) FROM services WHERE id = ? AND is_active = 1');
+    $serviceCheck->execute([$serviceId]);
+    if (!(int) $serviceCheck->fetchColumn()) {
+        flash('error', 'الخدمة المختارة غير متاحة حاليًا.');
         redirect('/appointments');
     }
 

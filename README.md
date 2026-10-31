@@ -4,9 +4,9 @@ ShifaFlow is an Arabic-first clinic workflow demo for managing users, appointmen
 
 > The published demo must contain fictional data only. This repository is not yet certified for real medical records.
 
-## Hosting status
+## Demo status
 
-ShifaFlow was previously deployed on Railway at `shifaflow-production.up.railway.app`. That deployment is currently offline because its Railway trial expired; the application remains available locally through WampServer and is packaged for a future Railway or Docker deployment.
+There is no active public demo at the moment. ShifaFlow was previously deployed successfully on Railway, and that deployment was retired after the trial ended. The application remains available locally through WampServer and is packaged for a future Railway or Docker deployment.
 
 Use one of the fictional accounts below for local testing. Do not enter real patient or medical data.
 

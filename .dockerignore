@@ -1,0 +1,12 @@
+.git
+.github
+.env
+.vscode
+assets
+dashboard
+uplode
+storage/logs/*
+storage/cache/*
+storage/uploads/*
+vendor
+README.md

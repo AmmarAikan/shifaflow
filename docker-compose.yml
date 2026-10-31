@@ -1,0 +1,40 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      APP_NAME: ShifaFlow
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8080
+      APP_TIMEZONE: Asia/Riyadh
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: shifaflow
+      DB_USER: shifaflow
+      DB_PASSWORD: shifaflow_local
+      SEED_DEMO: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: shifaflow
+      MYSQL_USER: shifaflow
+      MYSQL_PASSWORD: shifaflow_local
+      MYSQL_ROOT_PASSWORD: root_local_only
+    ports:
+      - "3307:3306"
+    volumes:
+      - shifaflow_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot_local_only"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  shifaflow_mysql:

@@ -1,0 +1,1 @@
+<section class="error-page"><div><span>403</span><h1>لا تملك صلاحية الوصول</h1><p>هذه الصفحة مخصصة لدور مختلف داخل النظام.</p><a class="button button-primary" href="<?= url('/dashboard') ?>">العودة إلى لوحة التحكم</a></div></section>
